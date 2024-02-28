@@ -48,8 +48,8 @@ export default Pagination;
 const styles = StyleSheet.create({
   dotView: {
     flex: 0.2,
-    borderColor: 'green',
-    borderWidth: 2,
+   // borderColor: 'green',
+   // borderWidth: 2,
     flexDirection: 'row',
     justifyContent: 'center', // Center horizontally
     alignItems: 'center',
