@@ -1,5 +1,5 @@
-import React, {useRef, useState} from 'react';
-import {View, Dimensions, TouchableOpacity, StyleSheet} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {View, Dimensions, TouchableOpacity, StyleSheet,Text} from 'react-native';
 import SlideItem from './SlideItem';
 import Carousel from 'react-native-reanimated-carousel';
 import type {ICarouselInstance} from 'react-native-reanimated-carousel';
@@ -31,6 +31,29 @@ const AnimatedCarousel = (props: AnimatedCarouseProps) => {
     height: PAGE_HEIGHT,
 
   };
+
+useEffect(() => {
+
+  if(isAutoPlay){
+
+    const timer = setTimeout(() => {
+
+      const nextIndex = (currentIndex +1) % props.slides.length;
+      setCurrentIndex(nextIndex);
+      (carouselRef.current as any)?.scrollIndex(nextIndex, true);
+
+    }, 5000);
+    return () => clearTimeout(timer);
+
+  }
+}, [currentIndex, isAutoPlay,props.slides.length]);
+
+const toggleAutoPlay = ():void => 
+{ setIsAutoPlay(!isAutoPlay);
+
+};
+
+
 
   return (
     <View style={styles.container}>
@@ -64,6 +87,9 @@ const AnimatedCarousel = (props: AnimatedCarouseProps) => {
         }}
          renderItem={({item}) => <SlideItem item={item} />}
       />
+      <TouchableOpacity onPress={toggleAutoPlay} style={{padding: 20, backgroundColor: '#ddd', marginTop: 10 }} >
+        <Text> {isAutoPlay ? 'Stop AutoPlay' :' Start AutoPlay'}</Text>
+      </TouchableOpacity>
 
       <Pagination
         slides={props.slides}
