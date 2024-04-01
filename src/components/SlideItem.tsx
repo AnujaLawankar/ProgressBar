@@ -53,13 +53,13 @@ import {
   
   const styles = StyleSheet.create({
     image: {
-      flex: 0.9,
+     // flex: 0.5,
       width: '100%',
     },
   
   
     content: {
-      flex: 0.2,
+    //  flex: 0.2,
       backgroundColor: 'black',
     },
     textContainer: {

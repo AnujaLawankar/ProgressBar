@@ -1,0 +1,44 @@
+{
+    "react-native-gesture-handler@2.15.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/software-mansion/react-native-gesture-handler",
+        "licenseUrl": "https://github.com/software-mansion/react-native-gesture-handler/raw/master/LICENSE",
+        "parents": "ProgressBar"
+    },
+    "react-native-reanimated-carousel@3.5.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/dohooo/react-native-reanimated-carousel",
+        "licenseUrl": "https://github.com/dohooo/react-native-reanimated-carousel/raw/master/LICENSE",
+        "parents": "ProgressBar"
+    },
+    "react-native-reanimated@3.7.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/software-mansion/react-native-reanimated",
+        "licenseUrl": "https://github.com/software-mansion/react-native-reanimated/raw/master/LICENSE",
+        "parents": "ProgressBar"
+    },
+    "react-native-size-matters@0.4.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/nirsky/react-native-size-matters",
+        "licenseUrl": "https://github.com/nirsky/react-native-size-matters/raw/master/LICENSE",
+        "parents": "ProgressBar"
+    },
+    "react-native-vector-icons@10.0.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/oblador/react-native-vector-icons",
+        "licenseUrl": "https://github.com/oblador/react-native-vector-icons/raw/master/LICENSE",
+        "parents": "ProgressBar"
+    },
+    "react-native@0.73.4": {
+        "licenses": "MIT",
+        "repository": "https://github.com/facebook/react-native",
+        "licenseUrl": "https://github.com/facebook/react-native/raw/master/LICENSE",
+        "parents": "ProgressBar"
+    },
+    "react@18.2.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/facebook/react",
+        "licenseUrl": "https://github.com/facebook/react/raw/master/LICENSE",
+        "parents": "ProgressBar"
+    }
+}

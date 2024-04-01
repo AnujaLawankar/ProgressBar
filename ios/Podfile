@@ -26,7 +26,10 @@ if linkage != nil
 end
 
 target 'ProgressBar' do
-  config = use_native_modules!
+
+# pod 'LicensePlist'
+
+ config = use_native_modules!
 
   use_react_native!(
     :path => config[:reactNativePath],
