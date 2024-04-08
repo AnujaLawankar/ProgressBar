@@ -1,17 +1,17 @@
 import React, { useState,useEffect} from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet,Modal } from 'react-native';
+import { WebView } from 'react-native-webview';
 
-
-type Item = {
-    itemName: string;
-    licenses:string;
-    repository:string;
-    licenseUrl:string;
-    parents:string;
-  };
+// type Item = {
+//     itemName: string;
+//     licenses:string;
+//     repository:string;
+//     licenseUrl:string;
+//     parents:string;
+//   };
   
 // Sample JSON object
-const data = {
+const rawData = {
   "items": [
     {
         "react-native-gesture-handler@2.15.0": {
@@ -61,87 +61,190 @@ const data = {
   ]
 };
 
-const flatData = Object.entries(data.items[0]).map(([itemName, details]) => ({
-    itemName,
-    ...details,
-  }));
+
+// Transform raw data to a flat list structure
+const items = Object.entries(rawData.items[0]).map(([itemName, details]) => ({
+  itemName,
+  details,
+}));
+
+// Define TypeScript types for item details
+type ItemDetails = {
+  licenses: string;
+  repository: string;
+  licenseUrl: string;
+};
+
+type Item = {
+  itemName: string;
+  details: ItemDetails;
+};
+
+
+
+
+// const flatData = Object.entries(data.items[0]).map(([itemName, details]) => ({
+//     itemName,
+//     ...details,
+//   }));
   
 
 
+// const ItemList = () => {
+//   // State to keep track of expanded items
+//   const [expandedItems, setExpandedItems] = useState<string[]>([]);
+
+//   useEffect(() => {
+//     console.log("Rendering ItemList with items:", flatData);
+//   }, []);
+
+
+//   // Function to handle the press event on an item
+//   // const toggleItemExpansion = (itemName: string) => {
+//   //   if (expandedItems.includes(itemName)) {
+//   //     // If the item is already expanded, collapse it
+//   //     setExpandedItems(expandedItems.filter(item => item !== itemName));
+//   //   } else {
+//   //     // Otherwise, expand it
+//   //     setExpandedItems([...expandedItems, itemName]);
+//   //   }
+//   // };
+
+
+//   const toggleItemExpansion = (itemName: string) => {
+//     const isCurrentlyExpanded = expandedItems.includes(itemName);
+//     if (isCurrentlyExpanded) {
+//       // If the item is already expanded, collapse it
+//       const newExpandedItems = expandedItems.filter(item => item !== itemName);
+//       setExpandedItems(newExpandedItems);
+//       console.log(`Collapsing ${itemName}. Expanded items now:`, newExpandedItems);
+//     } else {
+//       // Otherwise, expand it
+//       const newExpandedItems = [...expandedItems, itemName];
+//       setExpandedItems(newExpandedItems);
+//       console.log(`Expanding ${itemName}. Expanded items now:`, newExpandedItems);
+//     }
+//   };
+  
+//   // Render function for each item
+//   const renderItem = ({ item }: { item: Item }) => {
+//     const isExpanded = expandedItems.includes(item.itemName);
+//     return (
+//       <TouchableOpacity style={styles.itemContainer} onPress={() => toggleItemExpansion(item.itemName)}>
+//         <Text>{item.itemName}</Text>
+//         <Text style={styles.arrow}>{isExpanded ? '↓' : '→'}</Text>
+//         {isExpanded && <Text style={styles.liststyle}>{item.licenses}</Text>}
+//       </TouchableOpacity>
+//     );
+//   };
+
+//   return (
+//     <FlatList
+//       data={flatData}
+//       renderItem={renderItem}
+//       keyExtractor={item => item.itemName}
+//     />
+//   );
+// };
+
+// const styles = StyleSheet.create({
+//   itemContainer: {
+//     flex:0.5,
+//     flexDirection: 'column',
+//     padding: 10,
+   
+//     zIndex:2,
+//   },
+//   arrow: {
+//     // Style your arrow here
+
+
+//   },
+//   liststyle:{
+    
+//   }
+  
+// });
 const ItemList = () => {
-  // State to keep track of expanded items
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
-
-  useEffect(() => {
-    console.log("Rendering ItemList with items:", flatData);
-  }, []);
-
-
-  // Function to handle the press event on an item
-  // const toggleItemExpansion = (itemName: string) => {
-  //   if (expandedItems.includes(itemName)) {
-  //     // If the item is already expanded, collapse it
-  //     setExpandedItems(expandedItems.filter(item => item !== itemName));
-  //   } else {
-  //     // Otherwise, expand it
-  //     setExpandedItems([...expandedItems, itemName]);
-  //   }
-  // };
-
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [selectedUrl, setSelectedUrl] = useState<string>('');
 
   const toggleItemExpansion = (itemName: string) => {
-    const isCurrentlyExpanded = expandedItems.includes(itemName);
-    if (isCurrentlyExpanded) {
-      // If the item is already expanded, collapse it
-      const newExpandedItems = expandedItems.filter(item => item !== itemName);
-      setExpandedItems(newExpandedItems);
-      console.log(`Collapsing ${itemName}. Expanded items now:`, newExpandedItems);
-    } else {
-      // Otherwise, expand it
-      const newExpandedItems = [...expandedItems, itemName];
-      setExpandedItems(newExpandedItems);
-      console.log(`Expanding ${itemName}. Expanded items now:`, newExpandedItems);
-    }
+    setExpandedItems(expandedItems.includes(itemName) ? expandedItems.filter(item => item !== itemName) : [...expandedItems, itemName]);
   };
-  
-  // Render function for each item
+
   const renderItem = ({ item }: { item: Item }) => {
     const isExpanded = expandedItems.includes(item.itemName);
     return (
       <TouchableOpacity style={styles.itemContainer} onPress={() => toggleItemExpansion(item.itemName)}>
         <Text>{item.itemName}</Text>
         <Text style={styles.arrow}>{isExpanded ? '↓' : '→'}</Text>
-        {isExpanded && <Text style={styles.description}>{item.licenses}</Text>}
+        {isExpanded && (
+          <View>
+            <Text>Licenses: {item.details.licenses}</Text>
+            <Text>Repository: {item.details.repository}</Text>
+            <TouchableOpacity onPress={() => { setModalVisible(true); setSelectedUrl(item.details.licenseUrl); }}>
+              <Text style={styles.licenseLink}>View License</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </TouchableOpacity>
     );
   };
 
   return (
-    <FlatList
-      data={flatData}
-      renderItem={renderItem}
-      keyExtractor={item => item.itemName}
-    />
+    <View style={{ flex: 1 }}>
+      <FlatList
+        data={items}
+        renderItem={renderItem}
+        keyExtractor={item => item.itemName}
+      />
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}>
+        <WebView source={{ uri: selectedUrl }} />
+        <TouchableOpacity
+          style={styles.closeModalButton}
+          onPress={() => setModalVisible(!modalVisible)}>
+          <Text style={styles.closeModalButtonText}>Close</Text>
+        </TouchableOpacity>
+      </Modal>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   itemContainer: {
-    flex:1,
     flexDirection: 'column',
     padding: 10,
-    color:'white',
-    borderColor: 'red',
-    borderWidth: 5,
-    zIndex:2,
+    borderBottomWidth: 1,
+    borderBottomColor: '#cccccc',
   },
   arrow: {
     // Style your arrow here
   },
-  description: {
-   // marginTop: 5,
-    // Style your description here
+  licenseLink: {
+    marginTop: 5,
+    color: 'blue',
+    textDecorationLine: 'underline',
   },
+  closeModalButton: {
+    alignSelf: 'center',
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: 'lightgrey',
+    borderRadius: 5,
+  },
+  closeModalButtonText: {
+    color: 'black',
+  },
+  // Add more styles as needed
 });
+
 
 export default ItemList;

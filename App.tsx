@@ -3,7 +3,7 @@ import React from 'react';
 
 import AnimatedCarousel from './src/components/AnimatedCarousel';
 import data from './src/components/data';
-
+import ItemList from './src/components/ItemList';
 
 const App = () => {
 
@@ -12,8 +12,8 @@ const App = () => {
   return (
     <View style={styles.container}>
 
-      <CarouselType slides={data} />
-    
+      {/* <CarouselType slides={data} /> */}
+    <ItemList />
     </View>
   );
 };
@@ -24,6 +24,6 @@ const styles = StyleSheet.create({
 
   container:{
     flex:1,
-    backgroundColor:'black'
+    // backgroundColor:'black'
   }
 })

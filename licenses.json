@@ -29,6 +29,12 @@
         "licenseUrl": "https://github.com/oblador/react-native-vector-icons/raw/master/LICENSE",
         "parents": "ProgressBar"
     },
+    "react-native-webview@13.8.4": {
+        "licenses": "MIT",
+        "repository": "https://github.com/react-native-webview/react-native-webview",
+        "licenseUrl": "https://github.com/react-native-webview/react-native-webview/raw/master/LICENSE",
+        "parents": "ProgressBar"
+    },
     "react-native@0.73.4": {
         "licenses": "MIT",
         "repository": "https://github.com/facebook/react-native",
